@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>LAFD – Système des Rôles</title>
+
+  <style>
+    /* ------------------------------ */
+    /*        GLOBAL SETTINGS         */
+    /* ------------------------------ */
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0a0a0a;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #111; }
+    ::-webkit-scrollbar-thumb { background: #b30000; border-radius: 5px; }
+
+    /* ------------------------------ */
+    /*            HEADER              */
+    /* ------------------------------ */
+
+    .header {
+      width: 100%;
+      padding: 40px 0;
+      text-align: center;
+      background: linear-gradient(135deg, #b30000, #660000);
+      color: white;
+      font-size: 42px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      box-shadow: 0 0 25px #000;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ------------------------------ */
+    /*         SECTION TITLES         */
+    /* ------------------------------ */
+
+    h2 {
+      margin-top: 60px;
+      padding: 15px 25px;
+      background: #1a1a1a;
+      font-size: 28px;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px #000;
+      width: fit-content;
+      animation: slideIn 1.5s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-left: 8px solid #ffcc66;
+      color: #ffcc66;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .hc-title .dot { background: #8B0000; }
+    .off-title .dot { background: #FBC02D; }
+    .ff-title .dot { background: #EF6C00; }
+    .ems-title .dot { background: #1565C0; }
+    .tr-title .dot { background: #2E7D32; }
+    .sp-title .dot { background: #6A1B9A; }
+    .rec-title .dot { background: #202225; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ------------------------------ */
+    /*             CARDS              */
+    /* ------------------------------ */
+
+    .card-container {
+      width: 95%;
+      margin: 20px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #141414;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #000;
+      border-left: 5px solid #b30000;
+      transition: 0.3s;
+      animation: fadeInUp 1.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 25px #b30000;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .code {
+      font-weight: bold;
+      font-size: 20px;
+      background: rgba(0,0,0,0.3);
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .role-name {
+      font-size: 22px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .desc {
+      margin-top: 10px;
+      font-size: 17px;
+      line-height: 1.6;
+      color: #f0f0f0;
+    }
+
+    /* ------------------------------ */
+    /*   COULEURS DES RÔLES + CODES   */
+    /* ------------------------------ */
+
+    .hc-15 .code, .hc-15 .role-name { color: #B71C1C; }
+    .hc-14 .code, .hc-14 .role-name { color: #C62828; }
+    .hc-13 .code, .hc-13 .role-name { color: #D32F2F; }
+    .hc-12 .code, .hc-12 .role-name { color: #E53935; }
+    .hc-11 .code, .hc-11 .role-name { color: #F0625D; }
+
+    .off-10 .code, .off-10 .role-name { color: #FDD835; }
+    .off-9  .code, .off-9  .role-name { color: #FFCA28; }
+    .off-8  .code, .off-8  .role-name { color: #FFD54F; }
+
+    .ff-7 .code, .ff-7 .role-name { color: #F57C00; }
+    .ff-6 .code, .ff-6 .role-name { color: #FB8C00; }
+    .ff-5 .code, .ff-5 .role-name { color: #FF9800; }
+    .ff-4 .code, .ff-4 .role-name { color: #FFB74D; }
+    .ff-3 .code, .ff-3 .role-name { color: #FFB74D; }
+
+    .ems-5 .code, .ems-5 .role-name { color: #1976D2; }
+    .ems-4 .code, .ems-4 .role-name { color: #1E88E5; }
+    .ems-3 .code, .ems-3 .role-name { color: #42A5F5; }
+    .ems-2 .code, .ems-2 .role-name { color: #64B5F6; }
+    .ems-1 .code, .ems-1 .role-name { color: #64B5F6; }
+
+    .tr-5 .code, .tr-5 .role-name { color: #388E3C; }
+    .tr-4 .code, .tr-4 .role-name { color: #43A047; }
+    .tr-3 .code, .tr-3 .role-name { color: #66BB6A; }
+    .tr-2 .code, .tr-2 .role-name { color: #81C784; }
+    .tr-1 .code, .tr-1 .role-name { color: #81C784; }
+
+    .sp-1 .code, .sp-1 .role-name { color: #7B1FA2; }
+
+    .rec-3 .code, .rec-3 .role-name { color: #2F3136; }
+    .rec-2 .code, .rec-2 .role-name { color: #36393F; }
+
+  </style>
+</head>
+
+<body>
+
+<div class="header">LAFD – Système des Rôles</div>
+
+<!-- =============================== -->
+<!--        SECTION HIGH COMMAND     -->
+<!-- =============================== -->
+
+<h2 class="hc-title"><span class="dot"></span>HIGH COMMAND</h2>
+
+<div class="card-container">
+
+  <div class="card hc-15">
+    <div class="code">𝐋𝐀𝐅𝐃 | 15</div>
+    <div class="role-name">Fire Chief</div>
+    <div class="desc">Dirige l’ensemble du département. Supervise les opérations, la stratégie, les promotions et les décisions majeures. Garant de la sécurité publique et de la bonne gestion du LAFD.</div>
+  </div>
+
+  <div class="card hc-14">
+    <div class="code">𝐋𝐀𝐅𝐃 | 14</div>
+    <div class="role-name">Assistant Chief</div>
+    <div class="desc">Assiste directement le Fire Chief. Coordonne les divisions, gère les situations critiques et assure la continuité du commandement.</div>
+  </div>
+
+  <div class="card hc-13">
+    <div class="code">𝐋𝐀𝐅𝐃 | 13</div>
+    <div class="role-name">Deputy Chief</div>
+    <div class="desc">Supervise plusieurs secteurs opérationnels. Gère les interventions majeures et veille au respect des protocoles du département.</div>
+  </div>
+
+  <div class="card hc-12">
+    <div class="code">𝐋𝐀𝐅𝐃 | 12</div>
+    <div class="role-name">Division Chief</div>
+    <div class="desc">Responsable d’une division complète. Organise les équipes, contrôle les performances et assure la coordination inter‑services.</div>
+  </div>
+
+  <div class="card hc-11">
+    <div class="code">𝐋𝐀𝐅𝐃 | 11</div>
+    <div class="role-name">Battalion Chief</div>
+    <div class="desc">Dirige un bataillon et supervise les interventions de grande ampleur. Référence stratégique sur le terrain.</div>
+  </div>
+
+</div>
+
+<!-- =============================== -->
+<!--        OFFICER DIVISION         -->
+<!-- =============================== -->
+
+<h2 class="off-title"><span class="dot"></span>OFFICER DIVISION</h2>
+
+<div class="card-container">
+
+  <div class="card off-10">
+    <div class="code">𝐋𝐀𝐅𝐃 | 10</div>
+    <div class="role-name">Captain II</div>
+    <div class="desc">Officier confirmé dirigeant une caserne ou une unité avancée. Responsable de la discipline, de la formation et de la gestion des équipes.</div>
+  </div>
+
+  <div class="card off-9">
+    <div class="code">𝐋𝐀𝐅𝐃 | 9</div>
+    <div class="role-name">Captain I</div>
+    <div class="desc">Chef d’équipe opérationnel. Coordonne les interventions, encadre les pompiers et assure la sécurité sur le terrain.</div>
+  </div>
+
+  <div class="card off-8">
+    <div class="code">𝐋𝐀𝐅𝐃 | 8</div>
+    <div class="role-name">Lieutenant</div>
+    <div class="desc">Officier de terrain chargé de superviser les équipes lors des interventions. Point de liaison entre commandement et pompiers.</div>
+  </div>
+
+</div>
+
+<!-- =============================== -->
+<!--          FIREFIGHTERS           -->
+<!-- =============================== -->
+
+<h2 class="ff-title"><span class="dot"></span>FIREFIGHTERS</h2>
+
+<div class="card-container">
+
+  <div class="card ff-7">
+    <div class="code">𝐋𝐀𝐅𝐃 | 7</div>
+    <div class="role-name">Apparatus Operator</div>
+    <div class="desc">Conducteur spécialisé des véhicules d’intervention. Maîtrise les équipements lourds et assure leur mise en œuvre rapide et sécurisée.</div>
+  </div>
+
+  <div class="card ff-6">
+    <div class="code">𝐋𝐀𝐅𝐃 | 6</div>
+    <div class="role-name">Firefighter III</div>
+    <div class="desc">Pompier expérimenté capable de gérer des situations complexes. Référence technique au sein de l’équipe.</div>
+  </div>
+
+  <div class="card ff-5">
+    <div class="code">𝐋𝐀𝐅𝐃 | 5</div>
+    <div class="role-name">Firefighter II</div>
+    <div class="desc">Pompier confirmé maîtrisant les procédures d’intervention. Soutient activement les opérations de sauvetage et d’extinction.</div>
+  </div>
+
+  <div class="card ff-4">
+    <div class="code">𝐋𝐀𝐅𝐃 | 4</div>
+    <div class="role-name">Firefighter I</div>
+    <div class="desc">Pompier opérationnel participant à toutes les interventions. Exécute les missions essentielles de lutte contre les incendies.</div>
+  </div>
+
+  <div class="card ff-3">
+    <div class="code">𝐋𝐀𝐅𝐃 | 3</div>
+    <div class="role-name">Probationary Firefighter</div>
+    <div class="desc">Nouveau pompier en période d’essai. Apprend les procédures, développe ses compétences et fait ses preuves sur le terrain.</div>
+  </div>
+
+</div>
+
+<!-- =============================== -->
+<!--           EMS DIVISION          -->
+<!-- =============================== -->
+
+<h2 class="ems-title"><span class="dot"></span>EMS DIVISION</h2>
+
+<div class="card-container">
+
+  <div class="card ems-5">
+    <div class="code">𝐋𝐀𝐅𝐃 | EMS-5</div>
+    <div class="role-name">EMS Chief</div>
+    <div class="desc">Chef de la division médicale. Supervise les équipes EMS, les protocoles de soins et les interventions médicales majeures.</div>
+  </div>
+
+  <div class="card ems-4">
+    <div class="code">𝐋𝐀𝐅𝐃 | EMS-4</div>
+    <div class="role-name">EMS Captain</div>
+    <div class="desc">Responsable des unités médicales. Coordonne les interventions et assure la qualité des soins prodigués.</div>
+  </div>
+
+  <div class="card ems-3">
+    <div class="code">𝐋𝐀𝐅𝐃 | EMS-3</div>
+    <div class="role-name">EMS Supervisor</div>
+    <div class="desc">Superviseur opérationnel chargé de gérer les équipes sur le terrain et d’assurer le suivi des protocoles médicaux.</div>
+  </div>
+
+  <div class="card ems-2">
+    <div class="code">𝐋𝐀𝐅𝐃 | EMS-2</div>
+    <div class="role-name">Paramedic</div>
+    <div class="desc">Personnel médical avancé capable de réaliser des soins d’urgence complexes et d’assurer la stabilisation des victimes.</div>
+  </div>
+
+  <div class="card ems-1">
+    <div class="code">𝐋𝐀𝐅𝐃 | EMS-1</div>
+    <div class="role-name">EMT</div>
+    <div class="desc">Technicien médical chargé des premiers soins, de l’évaluation des patients et du transport sécurisé vers les hôpitaux.</div>
+  </div>
+
+</div>
+
+<!-- =============================== -->
+<!--        TRAINING DIVISION        -->
+<!-- =============================== -->
+
+<h2 class="tr-title"><span class="dot"></span>TRAINING DIVISION</h2>
+
+<div class="card-container">
+
+  <div class="card tr-5">
+    <div class="code">𝐋𝐀𝐅𝐃 | T-6</div>
+    <div class="role-name">Training Chief</div>
+    <div class="desc">Chef de la formation. Développe les programmes d’entraînement et garantit le niveau d’excellence du personnel.</div>
+  </div>
+
+  <div class="card tr-4">
+    <div class="code">𝐋𝐀𝐅𝐃 | T-5</div>
+    <div class="role-name">Training Captain</div>
+    <div class="desc">Dirige les sessions de formation avancée. Encadre les instructeurs et supervise les évaluations.</div>
+  </div>
+
+  <div class="card tr-3">
+    <div class="code">𝐋𝐀𝐅𝐃 | T-4</div>
+    <div class="role-name">Training Officer</div>
+    <div class="desc">Formateur expérimenté chargé de transmettre les techniques essentielles et d’assurer la progression des recrues.</div>
+  </div>
+
+  <div class="card tr-2">
+    <div class="code">𝐋𝐀𝐅𝐃 | T-3</div>
+    <div class="role-name">Instructor</div>
+    <div class="desc">Instructeur spécialisé dans la formation pratique. Prépare les pompiers aux situations réelles.</div>
+  </div>
+
+  <div class="card tr-1">
+    <div class="code">𝐋𝐀𝐅𝐃 | T-2</div>
+    <div class="role-name">Assistant Instructor</div>
+    <div class="desc">Assiste les instructeurs dans les exercices, la préparation du matériel et l’encadrement des nouvelles recrues.</div>
+  </div>
+
+  <div class="card tr-1">
+    <div class="code">𝐋𝐀𝐅𝐃 | T-2</div>
+    <div class="role-name">Training Recruit</div>
+    <div class="desc"> Nouvelle recrue intégrant le programme de formation interne. Découvre les bases du métier,
+    apprend les protocoles du LAFD et participe aux premiers exercices supervisés.
+    Ne peut jamais intervenir seul : doit obligatoirement être accompagné d’un Instructor.</div>
+  </div>
+</div>
+
+<!-- =============================== -->
+<!--          SPECIAL UNITS          -->
+<!-- =============================== -->
+
+<h2 class="sp-title"><span class="dot"></span>SPECIAL UNITS</h2>
+
+<div class="card-container">
+
+  <div class="card sp-1">
+  <div class="code">𝐋𝐀𝐅𝐃 | S-1</div>
+  <div class="role-name">Fire Marshal</div>
+  <div class="desc">Responsable des enquêtes incendie, de la prévention et du contrôle des risques. Expert en analyse de scène et en sécurité publique.</div>
+</div>
+
+
+</div>
+
+<!-- =============================== -->
+<!--           RECRUITMENT           -->
+<!-- =============================== -->
+
+<h2 class="rec-title"><span class="dot"></span>RECRUITMENT</h2>
+
+<div class="card-container">
+
+  <div class="card rec-3">
+    <div class="code">𝐋𝐀𝐅𝐃 | R-3</div>
+    <div class="role-name">Academy Cadet</div>
+    <div class="desc">Élève en formation à l’académie. Apprend les bases du métier, les techniques essentielles et les protocoles du LAFD.</div>
+  </div>
+
+  <div class="card rec-2">
+    <div class="code">𝐋𝐀𝐅𝐃 | R-2</div>
+    <div class="role-name">Recruit</div>
+    <div class="desc">Nouveau membre du département. Suit les premières formations et se prépare à intégrer une équipe opérationnelle.</div>
+  </div>
+
+</div>
+
+echo "# index.html" >> README.md 
+git init 
+git add README.md 
+git commit -m "premier commit" 
+git branch -M main 
+git remote add origin https://github.com/remi08082010-pixel/index.html.git
+ git push -u origin main
+ git remote add origin https://github.com/remi08082010-pixel/index.html.git
+ git branch -M main 
+git push -u origin main
+
+</body>
+</html>
